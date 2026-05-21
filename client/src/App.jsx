@@ -4,8 +4,9 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
 import { Dashboard } from './pages/Dashboard'
-import { Meetingcard } from './components/Meetingcard'
 import { Login } from './pages/Login'
+import { Meeting } from './pages/Meeting'
+import { Route, Routes, Navigate } from 'react-router-dom'
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path = "/dashboard" element = { <Dashboard />}/>
       <Route path = "/meeting" element = {<Meeting/> }/>
+      <Route path = "/login" element = {<Login />} />
     </Routes>
   )
 }
