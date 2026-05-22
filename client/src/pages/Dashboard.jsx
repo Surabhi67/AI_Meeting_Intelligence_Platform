@@ -2,6 +2,7 @@ import { useState } from "react";
 import MeetingCard from "../components/MeetingCard";
 import { mockMeetings } from "../mockdata";
 import "./Dashboard.css";
+import Navbar from "../components/Navbar";
 import { useRef } from "react";
 
 export const Dashboard = () => {
@@ -33,6 +34,7 @@ export const Dashboard = () => {
 
   return (
     <div className="dashboard">
+      <Navbar/>
       {/* Header */}
       <div className="top-bar">
         <h1 className="title">Meetings</h1>
