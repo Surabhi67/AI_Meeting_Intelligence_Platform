@@ -1,0 +1,36 @@
+.meeting-page {
+  padding: 40px;
+  background: #f7f7fb;
+  min-height: 100vh;
+}
+
+
+.meeting-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+
+.status {
+  background: #d9f7df;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+
+.audio-card,
+.summary-card,
+.transcript-card {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+
+audio {
+  width: 100%;
+}

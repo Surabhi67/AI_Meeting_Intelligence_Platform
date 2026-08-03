@@ -12,16 +12,11 @@ export default function Navbar() {
         className="navbar-logo"
         onClick={() => navigate("/dashboard")}
       >
-        🎙️ MeetingAI
+        Meeting Summarizer
       </div>
 
       <div className="navbar-right">
-        <button
-          className="new-meeting-btn"
-          onClick={() => console.log("upload")}
-        >
-          + New Meeting
-        </button>
+        
 
         <div className="profile-circle">
           S

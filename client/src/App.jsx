@@ -14,7 +14,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path = "/dashboard" element = { <Dashboard />}/>
-      <Route path = "/meeting" element = {<Meeting/> }/>
+      <Route path = "/meeting/:id" element = {<Meeting/> }/>
       <Route path = "/login" element = {<Login />} />
     </Routes>
   )

@@ -1,43 +1,102 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import MeetingCard from "../components/MeetingCard";
-import { mockMeetings } from "../mockdata";
 import "./Dashboard.css";
 import Navbar from "../components/Navbar";
-import { useRef } from "react";
 
 export const Dashboard = () => {
   const [search, setSearch] = useState("");
+  const [meetings, setMeetings] = useState([]);
 
-  const filtered = mockMeetings.filter((m) =>
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/meetings")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("MEETINGS FROM BACKEND:", data);
+        setMeetings(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+
+  const filtered = meetings.filter((m) =>
     m.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  const fileinputRef = useRef(null);
 
   const handleUpload = () => {
-    fileinputRef.current.click();
-  }
+    fileInputRef.current.click();
+  };
 
-  const handleFileChange = (e) => {
+
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
 
-    if(!file)
-        return;
-    if(!file.type.startsWith("audio/")){
-        alert("Please upload an audio file.");
+    if (!file) return;
+
+    if (!file.type.startsWith("audio/")) {
+      alert("Please upload an audio file.");
+      return;
     }
-    else
-    {
-        console.log("uploading audio..");
+
+    console.log("Uploading:", file.name);
+
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:8000/meetings/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+
+      if (!response.ok) {
+        throw new Error("Upload failed");
+      }
+
+
+      const data = await response.json();
+
+      console.log("UPLOAD RESPONSE:", data);
+
+
+      // refresh meetings list
+      const updated = await fetch(
+        "http://127.0.0.1:8000/meetings"
+      );
+
+      const updatedMeetings = await updated.json();
+
+      setMeetings(updatedMeetings);
+
+
+    } catch (error) {
+      console.log("Upload error:", error);
+      alert("Upload failed");
     }
   };
 
+
   return (
     <div className="dashboard">
-      <Navbar/>
-      {/* Header */}
+
+      <Navbar />
+
       <div className="top-bar">
-        <h1 className="title">Meetings</h1>
+
+        <h1 className="title">
+          Meetings
+        </h1>
+
 
         <input
           className="search-bar"
@@ -45,26 +104,39 @@ export const Dashboard = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+
       </div>
 
-      {/* Cards */}
+
       <div className="meeting-grid">
+
         {filtered.map((meeting) => (
-          <MeetingCard key={meeting.id} meeting={meeting} />
+          <MeetingCard
+            key={meeting.id}
+            meeting={meeting}
+          />
         ))}
+
       </div>
-        <input
+
+
+      <input
         type="file"
-        ref={fileinputRef}
+        ref={fileInputRef}
         onChange={handleFileChange}
         accept="audio/*"
         style={{ display: "none" }}
-        />
-      {/* Floating Upload Button */}
-      <button className="fab" 
-      onClick = {handleUpload}
-      >+
+      />
+
+
+      <button
+        className="fab"
+        onClick={handleUpload}
+      >
+        +
       </button>
+
+
     </div>
   );
-}
+};

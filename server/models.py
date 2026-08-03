@@ -5,7 +5,8 @@ from sqlalchemy import (
     Integer,
     String,
     ForeignKey,
-    DateTime
+    DateTime,
+    Text
 )
 
 from sqlalchemy.orm import (
@@ -55,11 +56,7 @@ class User(Base):
 class Meeting(Base):
     __tablename__ = "meetings"
 
-    id = Column(
-        Integer,
-        primary_key=True,
-        index=True
-    )
+    id = Column(Integer, primary_key=True, index=True)
 
     owner_id = Column(
         Integer,
@@ -67,10 +64,7 @@ class Meeting(Base):
         nullable=False
     )
 
-    title = Column(
-        String,
-        nullable=False
-    )
+    title = Column(String, nullable=False)
 
     audio_path = Column(
         String,
@@ -86,6 +80,16 @@ class Meeting(Base):
     summary_path = Column(
         String,
         unique=True
+    )
+
+    summary = Column(
+        Text,
+        nullable=True
+    )
+    
+    transcript = Column(
+        Text,
+        nullable=True
     )
 
     status = Column(
@@ -107,8 +111,8 @@ class Meeting(Base):
         "MeetingAccess",
         back_populates="meeting"
     )
-
-
+    
+    
 class MeetingAccess(Base):
     __tablename__ = "meeting_access"
 

@@ -2,6 +2,7 @@ import os
 import tempfile
 import ffmpeg
 from google.cloud import storage
+from datetime import timedelta
 
 BUCKET_NAME = "meeting-summarizer-audio"
 
@@ -40,3 +41,9 @@ def upload_file(file, meeting_id: str) -> str:
     os.remove(output_path)
 
     return f"gs://{BUCKET_NAME}/{blob_name}"
+
+def get_public_url(gcs_path):
+    path = gcs_path.replace("gs://", "")
+    bucket, blob = path.split("/", 1)
+
+    return f"https://storage.googleapis.com/{bucket}/{blob}"
